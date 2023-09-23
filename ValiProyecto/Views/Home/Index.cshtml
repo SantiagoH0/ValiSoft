@@ -1,0 +1,277 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row mt-2">
+    <div class="col-sm-6">
+        <div class="card mb-4">
+            <div class="card-header"><b>Ventas Semanales</b></div>
+            <div class="card-body">
+                <canvas id="chartVentas" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="card mb-4">
+            <div class="card-header"><b>Top 5 productos mas vendidos</b></div>
+            <div class="card-body">
+                <canvas id="chartProductos" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="card mb-4">
+            <div class="card-header"><b>Top 5 productos menos vendidos</b></div>
+            <div class="card-body">
+                <canvas id="chartProductosMV" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="card mb-4">
+            <div class="card-header"><b>Compras semanales</b></div>
+            <div class="card-body">
+                <canvas id="chartCompras" style="max-height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="row mt-2">
+
+    <div class="col-sm-6">
+
+        <div class="card">
+            <div class="card-header"><b>Ventas Semanales</b></div>
+            <div class="card-body">
+                <canvas id="chartVentas" style="max-height:250px"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+
+        <div class="card">
+            <div class="card-header"><b>Top 5 productos mas vendidos</b></div>
+            <div class="card-body">
+                <canvas id="chartProductos" style="max-height:250px"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-sm-6">
+
+        <div class="card">
+            <div class="card-header"><b>Top 5 productos menos vendidos</b></div>
+            <div class="card-body">
+                <canvas id="chartProductosMV" style="max-height:250px"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-6">
+
+        <div class="card">
+            <div class="card-header"><b>Compras semanales</b></div>
+            <div class="card-body">
+                <canvas id="chartCompras" style="max-height:250px"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+</div>*@
+
+@section Scripts{
+    <script>
+        function resumenVenta() {
+
+            fetch("Home/resumenVenta")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+
+
+                    const labels = dataJson.map((item) => { return item.fecha })
+                    const values = dataJson.map((item) => { return item.cantidad })
+
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: '',
+                            data: values,
+                            backgroundColor: [
+                                'rgb(5, 205, 249 )',
+                                'rgb(201, 249, 5 )'
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    const config = {
+                        type: 'bar',
+                        data: data,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },
+                    };
+
+                    const canvasBarras = document.getElementById("chartVentas");
+
+                    const graficoBarras = new Chart(canvasBarras, config)
+                }).catch((error) => {
+                    console.log("error")
+                })
+        }
+
+        function resumenProducto() {
+
+            fetch("Home/resumenProducto")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+
+                    const labels = dataJson.map((item) => { return item.producto })
+                    const values = dataJson.map((item) => { return item.cantidad })
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Cantidad',
+                            data: values,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                "#01AF40",
+                                "#33FF93"
+                            ],
+                            hoverOffset: 5
+                        }]
+                    };
+
+                    const config = {
+                        type: 'doughnut',
+                        data: data,
+                    }
+
+
+                    const canvasDona = document.getElementById("chartProductos");
+
+                    const graficoDona = new Chart(canvasDona, config)
+
+                }).catch((error) => {
+                    console.log("error")
+                })
+        }
+
+        function resumenProductoMV() {
+
+            fetch("Home/resumenProductoMV")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+
+                    const labels = dataJson.map((item) => { return item.producto })
+                    const values = dataJson.map((item) => { return item.cantidad })
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Cantidad',
+                            data: values,
+                            backgroundColor: [
+                                '#FC0808',
+                                '#FF8383',
+                                '#FEADAD',
+                                "#F5FC09",
+                                "#48FC09"
+                            ],
+                            hoverOffset: 5
+                        }]
+                    };
+
+                    const config = {
+                        type: 'doughnut',
+                        data: data,
+                    }
+
+
+                    const canvasDona = document.getElementById("chartProductosMV");
+
+                    const graficoDona = new Chart(canvasDona, config)
+
+                }).catch((error) => {
+                    console.log("error")
+                })
+        }
+
+        function resumenCompra() {
+
+            fetch("Home/resumenCompra")
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+
+
+                    const labels = dataJson.map((item) => { return item.fecha })
+                    const values = dataJson.map((item) => { return item.cantidad })
+
+
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: '',
+                            data: values,
+                            backgroundColor: [
+                                '#33FF52',
+                                '#F3FF33'
+                            ],
+                            borderWidth: 1
+                        }]
+                    };
+
+                    const config = {
+                        type: 'bar',
+                        data: data,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },
+                    };
+
+                    const canvasBarras = document.getElementById("chartCompras");
+
+                    const graficoBarras = new Chart(canvasBarras, config)
+                }).catch((error) => {
+                    console.log("error")
+                })
+        }
+
+        $(document).ready(() => {
+            resumenVenta()
+            resumenProducto()
+            resumenCompra()
+            resumenProductoMV()
+        })
+    </script>
+    }

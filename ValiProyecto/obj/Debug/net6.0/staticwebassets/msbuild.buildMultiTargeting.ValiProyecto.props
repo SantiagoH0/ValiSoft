@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\ValiProyecto.props" />
+</Project>

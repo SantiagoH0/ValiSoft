@@ -1,0 +1,40 @@
+﻿@model ValiProyecto.Models.OrdenCompra
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Detalle </h1>
+<br>
+<hr />
+
+<div>
+    <h4>Órden de Compra</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaOrdenCompra)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaOrdenCompra)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Proveedor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Proveedor.Nombre)
+        </dd>
+    </dl>
+</div>
+<div>
+   
+    <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.IdOrdenCompra">Editar</a>
+    <a asp-action="Index" class="btn btn-dark">Regresar</a>
+</div>
